@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>勤怠評価制度|VENT / FLASH EDUCATION</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF9F4;
+    --card:#FFFFFF;
+    --ink:#2B2620;
+    --sub:#6E645A;
+    --gold:#B49A6A;
+    --gold-deep:#8A7248;
+    --gold-pale:#F1EADD;
+    --line:#E4DCCC;
+    --good:#5E7B52;
+    --good-pale:#EDF2E8;
+    --ng:#B0533B;
+    --ng-pale:#F7E9E4;
+    --mid:#7A6F60;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Zen Kaku Gothic New",sans-serif;
+    line-height:1.75;
+    font-size:15px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:880px;margin:0 auto;padding:56px 28px 80px;}
+
+  /* ===== header ===== */
+  header{text-align:center;margin-bottom:52px;}
+  .doc-eyebrow{
+    display:inline-block;
+    font-size:11px;letter-spacing:.35em;font-weight:700;
+    color:var(--gold-deep);
+    border:1px solid var(--gold);
+    padding:5px 18px 5px 21px;
+    margin-bottom:22px;
+  }
+  h1{
+    font-family:"Zen Old Mincho",serif;
+    font-size:44px;font-weight:900;letter-spacing:.14em;
+    line-height:1.25;
+  }
+  .rule{width:56px;height:3px;background:var(--gold);margin:22px auto 24px;}
+  .lead{color:var(--sub);font-size:14px;max-width:560px;margin:0 auto;}
+  .meta{
+    display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:26px;
+  }
+  .meta span{
+    background:var(--gold-pale);
+    font-size:12px;font-weight:700;color:var(--gold-deep);
+    padding:6px 14px;letter-spacing:.06em;
+  }
+
+  /* ===== section frame ===== */
+  section{margin-bottom:46px;}
+  .sec-head{
+    display:flex;align-items:baseline;gap:14px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:10px;margin-bottom:22px;
+  }
+  .sec-num{
+    font-family:"Zen Old Mincho",serif;
+    font-size:15px;font-weight:700;color:var(--gold-deep);
+    letter-spacing:.1em;white-space:nowrap;
+  }
+  .sec-head h2{
+    font-family:"Zen Old Mincho",serif;
+    font-size:23px;font-weight:700;letter-spacing:.06em;
+  }
+  .sec-note{color:var(--sub);font-size:13px;margin-top:-14px;margin-bottom:20px;}
+
+  /* ===== 1. counts ===== */
+  .counts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .count{
+    background:var(--card);border:1px solid var(--line);
+    padding:22px 18px 18px;text-align:center;position:relative;
+  }
+  .count::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--gold);
+  }
+  .count .q{font-size:34px;font-family:"Zen Old Mincho",serif;font-weight:900;color:var(--gold-deep);line-height:1;}
+  .count .t{font-weight:700;font-size:15px;margin-top:10px;}
+  .count .d{font-size:12px;color:var(--sub);margin-top:6px;line-height:1.6;}
+  .counts-tail{
+    text-align:center;margin-top:16px;font-size:13.5px;color:var(--sub);
+  }
+  .counts-tail b{color:var(--ink);}
+
+  /* ===== 2. ranks (signature) ===== */
+  .ranks{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .rank{
+    background:var(--card);border:1px solid var(--line);
+    display:flex;flex-direction:column;
+  }
+  .rank-head{
+    padding:16px 18px 14px;color:#fff;
+    display:flex;align-items:center;gap:10px;
+  }
+  .rank-head .mark{font-size:24px;line-height:1;}
+  .rank-head .name{font-family:"Zen Old Mincho",serif;font-size:19px;font-weight:700;letter-spacing:.08em;}
+  .rank.good .rank-head{background:var(--good);}
+  .rank.ok   .rank-head{background:var(--gold);}
+  .rank.ng   .rank-head{background:var(--ng);}
+  .rank-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:14px;}
+  .cond{font-size:13px;line-height:1.7;}
+  .cond span{display:block;}
+  .nb{white-space:nowrap;}
+  .cond em{font-style:normal;font-weight:900;}
+  .result{
+    margin-top:auto;border-top:1px dashed var(--line);padding-top:13px;
+    font-size:13.5px;font-weight:700;line-height:1.65;
+  }
+  .rank.good .result{color:var(--good);}
+  .rank.ok   .result{color:var(--gold-deep);}
+  .rank.ng   .result{color:var(--ng);}
+  .money{
+    font-family:"Zen Old Mincho",serif;font-size:26px;font-weight:900;letter-spacing:.02em;
+  }
+  .rank .tag{
+    display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.14em;
+    padding:2px 8px;margin-left:auto;
+    background:rgba(255,255,255,.22);color:#fff;border-radius:2px;
+  }
+
+  /* ===== rule cards (3) ===== */
+  .rules{display:grid;grid-template-columns:1fr;gap:12px;}
+  .rulebox{
+    background:var(--card);border:1px solid var(--line);
+    display:grid;grid-template-columns:150px 1fr;
+  }
+  .rulebox .rl{
+    background:var(--gold-pale);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:14px;color:var(--gold-deep);
+    padding:16px 12px;text-align:center;line-height:1.5;
+    border-right:1px solid var(--line);
+  }
+  .rulebox .rr{padding:16px 20px;font-size:13.5px;}
+  .rulebox .rr b{background:linear-gradient(transparent 62%, var(--gold-pale) 62%);}
+  .rulebox .rr .fine{display:block;color:var(--sub);font-size:12px;margin-top:4px;}
+
+  /* ===== shift table ===== */
+  table{width:100%;border-collapse:collapse;background:var(--card);font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:11px 14px;text-align:left;vertical-align:top;}
+  thead th{
+    background:var(--gold);color:#fff;font-weight:700;letter-spacing:.05em;font-size:13px;
+  }
+  td b.warn{color:var(--ng);}
+  .num-cell{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:16px;white-space:nowrap;}
+
+  /* ===== escalation steps ===== */
+  .stairs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch;}
+  .step{
+    background:var(--card);border:1px solid var(--line);
+    display:flex;flex-direction:column;position:relative;
+  }
+  .step-head{
+    padding:12px 16px;color:#fff;background:var(--ink);
+    display:flex;align-items:center;gap:10px;
+  }
+  .step.ng3 .step-head{background:var(--ng);}
+  .step.ng3{background:var(--ng-pale);border-color:#E3C3B6;}
+  .s-num{
+    font-family:"Zen Old Mincho",serif;font-size:11px;font-weight:700;letter-spacing:.14em;
+    background:rgba(255,255,255,.2);padding:2px 9px;white-space:nowrap;
+  }
+  .step-head h3{font-size:15px;font-weight:900;}
+  .step-body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:11px;flex:1;}
+  .step .trg{
+    font-size:12px;color:var(--sub);line-height:1.7;
+    border-bottom:1px dashed var(--line);padding-bottom:10px;
+  }
+  .step .trg b{color:var(--ink);}
+  .step ul{list-style:none;font-size:13px;}
+  .step ul li{padding-left:15px;position:relative;margin-bottom:6px;line-height:1.65;}
+  .step ul li::before{content:"・";position:absolute;left:0;color:var(--gold-deep);}
+  .step.ng3 ul li::before{color:var(--ng);}
+  .step::after{
+    content:"▶";position:absolute;right:-16px;top:50%;transform:translateY(-50%);
+    color:var(--gold);font-size:12px;z-index:2;
+  }
+  .step:last-child::after{display:none;}
+  .stairs-note{font-size:12.5px;color:var(--sub);margin-top:14px;}
+
+  /* ===== schedule ===== */
+  .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+  .tl{
+    background:var(--card);border:1px solid var(--line);border-left:none;
+    padding:16px 16px 14px;position:relative;
+  }
+  .tl:first-child{border-left:1px solid var(--line);}
+  .tl .day{
+    font-family:"Zen Old Mincho",serif;font-weight:900;font-size:17px;color:var(--gold-deep);
+  }
+  .tl .what{font-size:12.5px;margin-top:5px;line-height:1.6;}
+  .tl::after{
+    content:"▸";position:absolute;right:-7px;top:50%;transform:translateY(-50%);
+    color:var(--gold);font-size:13px;z-index:2;
+  }
+  .tl:last-child::after{display:none;}
+
+  .rollout{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+  .ro{
+    border:1px solid var(--line);background:var(--card);padding:16px 20px;
+  }
+  .ro .m{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:18px;color:var(--gold-deep);}
+  .ro p{font-size:13px;margin-top:5px;}
+
+  /* ===== promise band ===== */
+  .promise{
+    margin-top:56px;
+    background:var(--ink);color:#F4EFE5;
+    padding:28px 32px;text-align:center;
+  }
+  .promise .p-title{
+    font-family:"Zen Old Mincho",serif;font-size:20px;font-weight:700;letter-spacing:.1em;
+    color:#E5CFA3;margin-bottom:10px;
+  }
+  .promise p{font-size:13.5px;max-width:620px;margin:0 auto;line-height:1.9;}
+
+  footer{
+    margin-top:34px;text-align:center;color:var(--sub);font-size:11.5px;letter-spacing:.08em;
+  }
+  footer b{color:var(--gold-deep);}
+
+  @media (max-width:720px){
+    h1{font-size:32px;}
+    .counts,.ranks,.stairs,.timeline,.rollout{grid-template-columns:1fr;}
+    .tl{border-left:1px solid var(--line);border-top:none;}
+    .tl:first-child{border-top:1px solid var(--line);}
+    .step::after{content:"▼";right:auto;left:50%;top:auto;bottom:-16px;transform:translateX(-50%);}
+    .step:last-child::after{display:none;}
+    .tl::after{content:"▾";right:auto;left:50%;top:auto;bottom:-9px;transform:translateX(-50%);}
+    .rulebox{grid-template-columns:1fr;}
+    .rulebox .rl{border-right:none;border-bottom:1px solid var(--line);padding:10px;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{padding:20px;}
+    .promise{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="doc-eyebrow">VENT / FLASH EDUCATION PTE. LTD.</div>
+    <h1>勤怠評価制度</h1>
+    <div class="rule"></div>
+    <p class="lead">毎月の勤怠を、だれでも分かるシンプルなルールで評価します。<br>まじめに出勤する人が、きちんと得をする制度です。</p>
+    <div class="meta">
+      <span>Ver. 2.3</span>
+      <span>対象:SLK 全スタッフ</span>
+      <span>試行:2026年9月度〜</span>
+      <span>本格適用:2026年10月度〜</span>
+    </div>
+  </header>
+
+  <!-- 1 -->
+  <section>
+    <div class="sec-head"><span class="sec-num">第1条</span><h2>毎月、数えるのは3つだけ</h2></div>
+    <div class="counts">
+      <div class="count">
+        <div class="q">①</div>
+        <div class="t">急な私用休暇</div>
+        <div class="d">出勤6日前 〜 9時間前の申請<br>(申請はできますが、評価にカウントします)</div>
+      </div>
+      <div class="count">
+        <div class="q">②</div>
+        <div class="t">臨時休暇・早退・遅刻</div>
+        <div class="d">9時間を切った連絡/勤務開始後の申請(規則の定義どおり)+打刻の遅れ</div>
+      </div>
+      <div class="count">
+        <div class="q">③</div>
+        <div class="t">無断欠勤</div>
+        <div class="d">連絡なしで休んだ日<br>(規則では欠勤になります)</div>
+      </div>
+    </div>
+    <p class="counts-tail"><b>7日前までに事前申請した休暇</b>(年休・私用休・祝日振替など)と、<b>証明書を提出した休暇</b>は、カウントしません。</p>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="sec-head"><span class="sec-num">第2条</span><h2>評価は3段階</h2></div>
+    <p class="sec-note">集計期間は給与と同じ「毎月26日〜翌25日」。3つのカウントだけで決まります。<b>いちばん悪い項目で判定します</b>:⭐は3つすべて0回が条件。✕は1つでも当てはまった時点で✕になります。</p>
+    <div class="ranks">
+      <div class="rank good">
+        <div class="rank-head"><span class="mark">⭐</span><span class="name">GOOD</span><span class="tag">全部 0回</span></div>
+        <div class="rank-body">
+          <div class="cond"><span>急な私用休暇 <em>0回</em></span><span>臨時・早退・遅刻 <em>0回</em></span><span>無断欠勤 <em>0回</em></span></div>
+          <div class="result">
+            <span class="money">$30</span> <span class="nb">ボーナス支給</span><br>
+            <span class="nb">昇給・ボーナス査定・</span><span class="nb">リーダー選定で優先</span>
+          </div>
+        </div>
+      </div>
+      <div class="rank ok">
+        <div class="rank-head"><span class="mark">○</span><span class="name">OK</span><span class="tag">ここまでOK</span></div>
+        <div class="rank-body">
+          <div class="cond"><span>急な私用休暇 <em>1回まで</em></span><span>臨時・早退・遅刻 <em>2回まで</em></span><span>無断欠勤 <em>0回</em></span></div>
+          <div class="result">通常評価<br>(ボーナスなし・ペナルティなし)</div>
+        </div>
+      </div>
+      <div class="rank ng">
+        <div class="rank-head"><span class="mark">✕</span><span class="name">NG</span><span class="tag">要改善</span></div>
+        <div class="rank-body">
+          <div class="cond"><span>急な私用休暇 <em>2回以上</em></span><span>臨時・早退・遅刻 <em>3回以上</em></span><span>または無断欠勤 <em>1回</em></span></div>
+          <div class="result"><span class="nb">ボーナスなし</span><br><span class="nb"><b>翌月は定休の振替不可</b></span><br><span class="nb">注意書の発行</span><span class="nb">(第4条のステップへ)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="sec-head"><span class="sec-num">第3条</span><h2>休暇のルール</h2></div>
+    <div class="rules">
+      <div class="rulebox">
+        <div class="rl">事前申請の休暇<br>(7日前まで)</div>
+        <div class="rr">年休・私用休暇(年7日)・祝日振替などを<b>7日前までに申請</b>した場合、カウントしません。給与の扱いは社内休暇規則のとおりです。
+          <span class="fine">※急な用事が見えている場合は、早めの申請でカウントを避けられます。</span>
+        </div>
+      </div>
+      <div class="rulebox">
+        <div class="rl">当日の傷病休暇</div>
+        <div class="rr">規則どおり<b>勤務開始9時間前までに連絡+1週間以内に証明を提出</b> → カウントしません(給与は規則どおり半額)。
+          <span class="fine">※証明の提出がない場合は「①急な私用休暇」としてカウントします(給与処理は規則のとおり)。</span>
+        </div>
+      </div>
+      <div class="rulebox">
+        <div class="rl">カウントしない<br>休暇</div>
+        <div class="rr">生理休暇・葬儀休暇・公傷病休暇・産休・公務休暇、また天災・停電など本人のせいではない事情は、評価に<b>影響しません</b>(申請のしかたは規則のとおり)。</div>
+      </div>
+      <div class="rulebox">
+        <div class="rl">祝日振替の<br>ルール</div>
+        <div class="rr">通常の祝日振替は、規則どおり<b>祝日±2ヶ月以内</b>に休暇として取得します(延長・換金なし)。<b>換金できるのは退職するときだけ</b>です(働いている間は換金できません)。
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 4 -->
+  <section>
+    <div class="sec-head"><span class="sec-num">第4条</span><h2>改善のステップ(自動適用)</h2></div>
+    <p class="sec-note">✕評価になった場合は、面談だけで終わらせず、<b>自動で</b>次のステップに進みます。</p>
+    <div class="stairs">
+      <div class="step">
+        <div class="step-head"><span class="s-num">STEP 1</span><h3>注意書</h3></div>
+        <div class="step-body">
+          <div class="trg">きっかけ:<b>単月の✕評価</b><br>(無断欠勤によるものを除く)</div>
+          <ul>
+            <li>書面通知+本人サイン</li>
+            <li>「翌月も✕なら STEP 2」と書面に書きます</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-head"><span class="s-num">STEP 2</span><h3>改善期間(1か月)</h3></div>
+        <div class="step-body">
+          <div class="trg">きっかけ:<b>✕が2か月連続</b><br><b>無断欠勤</b>のときは STEP 1 をとばして、<br>直接ここから始まります</div>
+          <ul>
+            <li>通知書を発行+本人サイン</li>
+            <li>期間中は定休の振替を停止</li>
+            <li>本採用・契約の自動更新を一時ストップ(改善できるまで決定しません)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step ng3">
+        <div class="step-head"><span class="s-num">STEP 3</span><h3>契約の見直し</h3></div>
+        <div class="step-body">
+          <div class="trg">きっかけ:<b>改善期間中の再発</b></div>
+          <ul>
+            <li>契約不更新/試用期間不合格</li>
+            <li>STEP 1・2 でサインした書面をもとに判断します</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p class="stairs-note">※STEP 1〜2 の記録は、その後6か月間問題がなければリセットされます。</p>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="sec-head"><span class="sec-num">第5条</span><h2>毎月の流れ</h2></div>
+    <div class="timeline">
+      <div class="tl"><div class="day">26日〜25日</div><div class="what">集計期間<br>(給与計算と同じ)</div></div>
+      <div class="tl"><div class="day">27日</div><div class="what">3つのカウントを集計し<br>評価を確定</div></div>
+      <div class="tl"><div class="day">月末まで</div><div class="what">本人へ個別フィードバック<br>(他の人の評価は非公開)</div></div>
+      <div class="tl"><div class="day">翌月給与</div><div class="what">⭐ボーナスを現金支給<br>明細に「Attendance Bonus」</div></div>
+    </div>
+    <div class="rollout">
+      <div class="ro"><div class="m">2026年9月度</div><p>試行期間:カウントとフィードバックを行い、<b>⭐の$30ボーナスは9月分から支給</b>します。ペナルティ(注意書・振替停止)はまだ適用しません。</p></div>
+      <div class="ro"><div class="m">2026年10月度〜</div><p>本格適用。9月の結果をもとに、回数の基準を最終調整します。</p></div>
+    </div>
+  </section>
+
+  <div class="promise">
+    <div class="p-title">― お約束 ―</div>
+    <p>評価はあなた本人だけに伝え、他のメンバーには公開しません。<br>
+    まじめに出勤している人が、ボーナス・昇給・リーダー選定できちんと報われる。<br>
+    そのための制度です。</p>
+  </div>
+
+  <footer>
+    <b>VENT / FLASH EDUCATION PTE. LTD.</b> ・ 勤怠評価制度 Ver.2.3 ・ 2026.08<br>
+    本制度は「社内休暇規則」といっしょに運用します。休暇の種類・申請方法・給与は規則のとおりで、本制度が決めるのは評価だけです。<br>
+    本評価は本採用および契約更新の判断基準として使用されます
+  </footer>
+
+</div>
+</body>
+</html>
